@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Análisis de chat</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    <h1>Análisis de chat</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Cargar y analizar</button>
+    </form>
+
+    <div id="loading" style="display: none;">
+        <div class="loader"></div>
+    </div>
+
+    {% if sentiments %}
+        <h2>Resultados del análisis</h2>
+        {% for author, messages in sentiments.items %}
+            <div class="user-messages">
+                <h3 onclick="toggleVisibility('{{ author }}')">{{ author }}</h3>
+                <div class="message-container" id="messages-{{ author }}" style="display: none;">
+                    <table>
+                        <tr>
+                            <th>Mensaje</th>
+                            <th>Sentimiento</th>
+                        </tr>
+                        {% for message, sentiment in messages %}
+                            <tr>
+                                {% if sentiment == "NEU" %}
+                                    <td style="color: gray;">{{ message }}</td>
+                                    <td style="color: gray;"><strong>{{ sentiment }}</strong></td>
+                                {% elif sentiment == "NEG" %}
+                                    <td style="color: rgb(160, 35, 35);">{{ message }}</td>
+                                    <td style="color: rgb(160, 35, 35);"><strong>{{ sentiment }}</strong></td>
+                                {% else %}
+                                    <td style="color: rgb(16, 129, 221);">{{ message }}</td>
+                                    <td style="color: rgb(16, 129, 221);"><strong>{{ sentiment }}</strong></td>                                    
+                                {% endif%}
+                                
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% empty %}
+            <p>No se encontraron mensajes válidos en el archivo.</p>
+        {% endfor %}
+    {% endif %}
+
+    <script src="{% static 'script.js'  %}"></script>
+    
+</body>
+</html>

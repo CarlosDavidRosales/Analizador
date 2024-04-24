@@ -1,0 +1,95 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    margin: 0 3% 0 3%;
+    padding: 20px;
+}
+
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #0056b3;
+}
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loading {
+    position: fixed;
+    z-index: 999;
+    height: 2em;
+    width: 2em;
+    overflow: visible;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+
+.user-messages h3 {
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+}
+
+.user-messages ul {
+    max-height: 300px;  /* Altura máxima antes de que empiece el desplazamiento */
+    overflow-y: auto;   /* Habilita el desplazamiento vertical si el contenido excede la altura máxima */
+    background: #f9f9f9;  /* Color de fondo para diferenciar la área de mensajes */
+    margin: 10px;       /* Espaciado alrededor de la lista */
+    padding: 10px;      /* Espaciado dentro de la lista */
+    border-radius: 5px; /* Bordes redondeados */
+    border: 1px solid #ccc; /* Borde sutil */
+}
+
+.user-messages h3:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.message-container {
+    max-height: 300px; /* Altura máxima del contenedor de mensajes */
+    overflow-y: auto; /* Habilita desplazamiento vertical si el contenido excede la altura máxima */
+    width: 100%; /* Ajustar al ancho del contenedor padre */
+    border: 1px solid #ccc; /* Borde ligero para el contenedor */
+    margin-top: 10px; /* Espacio superior para separar del título */
+}
+
+table {
+    width: 100%; /* Ajustar la tabla al ancho del contenedor */
+    border-collapse: collapse; /* Colapsar los bordes de la tabla */
+}
+
+th, td {
+    border: 1px solid #ddd; /* Borde ligero para cada celda */
+    padding: 8px; /* Espaciado interno para el texto en las celdas */
+    text-align: left; /* Alineación del texto */
+}
+
+th {
+    background-color: #f2f2f2; /* Color de fondo para los encabezados de la tabla */
+}
