@@ -40,10 +40,20 @@
                                     <td style="color: rgb(16, 129, 221);">{{ message }}</td>
                                     <td style="color: rgb(16, 129, 221);"><strong>{{ sentiment }}</strong></td>                                    
                                 {% endif%}
-                                
                             </tr>
                         {% endfor %}
                     </table>
+                    {% with wordclouds_POS=wordclouds.author.POS wordclouds_NEG=wordclouds.author.NEG wordclouds_NEU=wordclouds.author.NEU %}
+                        {% if wordclouds_POS %}
+                            <img src="data:image/png;base64,{{ wordclouds_POS }}" alt="Nube de Palabras Positivas">
+                        {% endif %}
+                        {% if wordclouds_NEG %}
+                            <img src="data:image/png;base64,{{ wordclouds_NEG }}" alt="Nube de Palabras Negativas">
+                        {% endif %}
+                        {% if wordclouds_NEU %}
+                            <img src="data:image/png;base64,{{ wordclouds_NEU }}" alt="Nube de Palabras Neutrales">
+                        {% endif %}
+                    {% endwith %}
                 </div>
             </div>
         {% empty %}
