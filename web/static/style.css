@@ -13,7 +13,7 @@ form {
 }
 
 button {
-    background-color: #007BFF;
+    background-color: #1aa8e0;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -21,7 +21,7 @@ button {
     cursor: pointer;
 }
 button:hover {
-    background-color: #0056b3;
+    background-color: #4500b3;
 }
 .loader {
     border: 16px solid #f3f3f3; /* Light grey */
@@ -92,4 +92,46 @@ th, td {
 
 th {
     background-color: #f2f2f2; /* Color de fondo para los encabezados de la tabla */
+}
+
+.image-container {
+    display: flex;  /* Alinea las imágenes horizontalmente */
+    justify-content: center; /* Centra las imágenes */
+    flex-wrap: wrap; /* Permite que las imágenes se envuelvan */
+    margin-bottom: 20px; /* Espacio debajo del contenedor de imágenes */
+}
+
+.image-container img {
+    width: 33%; /* Tamaño inicial de las imágenes */
+    transition: transform 0.3s ease; /* Suaviza la transición del tamaño */
+}
+
+.image-container-group {
+    display: flex;  /* Alinea las imágenes horizontalmente */
+    justify-content: space-around; /* Distribuye el espacio entre las imágenes uniformemente */
+    flex-wrap: wrap; /* Permite que las imágenes se envuelvan */
+    margin-bottom: 20px; /* Espacio debajo del contenedor de imágenes */
+}
+
+.image-container-group img {
+    width: 45%; /* Tamaño inicial de las imágenes */
+    transition: transform 0.3s ease; /* Suaviza la transición del tamaño */
+    margin: 10px;
+}
+
+.wordcloud {
+    flex: 1 1 30%; /* Permite que las nubes de palabras crezcan y se encojan */
+    margin: 10px; /* Espacio alrededor de cada nube de palabras */
+}
+
+.graph-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+}
+
+.barras {
+    max-width: 100%;
+    height: auto;
 }

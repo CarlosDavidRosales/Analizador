@@ -1,12 +1,13 @@
+{% load dict_filters %}
 {% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Análisis de chat</title>
+    <title>Análisis de sentimientos de grupos de Whatsapp</title>
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
 <body>
-    <h1>Análisis de chat</h1>
+    <h1 style="text-align: center;">Análisis de sentimientos de grupos de Whatsapp</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
@@ -18,14 +19,72 @@
     </div>
 
     {% if sentiments %}
-        <h2>Resultados del análisis</h2>
+        <h2 style="text-align: center;" >Resultados del análisis</h2>
+        
         {% for author, messages in sentiments.items %}
+            {% if author == 'GRUPO' %}
+            <h1 style="text-align: center;">GRUPO</h1> 
+            <h2>
+            </h2>
+                <div class="user-messages">
+                    <div class="message-container">
+                        <table>
+                            <tr>
+                                <th>Mensajes - {% with sent=author_sentiment_count|get_item:author %} 
+                                    Positivos: {{sent.POS}}, Negativos: {{sent.NEG}}, Neutrales {{sent.NEU}} 
+                                {% endwith %}</th>
+                                <th>Sentimiento</th>
+                            </tr>
+                            {% for message, sentiment in messages %}
+                                <tr>
+                                    {% if sentiment == "NEU" %}
+                                        <td style="color: gray;">{{ message }}</td>
+                                        <td style="color: gray;"><strong>{{ sentiment }}</strong></td>
+                                    {% elif sentiment == "NEG" %}
+                                        <td style="color: rgb(160, 35, 35);">{{ message }}</td>
+                                        <td style="color: rgb(160, 35, 35);"><strong>{{ sentiment }}</strong></td>
+                                    {% else %}
+                                        <td style="color: rgb(16, 129, 221);">{{ message }}</td>
+                                        <td style="color: rgb(16, 129, 221);"><strong>{{ sentiment }}</strong></td>                                    
+                                    {% endif%}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <h2>Grafica de barras: Cantidad de mensajes clasificados según su sentimiento</h2>
+                    <div class="graph-container">
+                        {% if grafica_barras %}
+                            <img class="barras" src="data:image/png;base64,{{ grafica_barras }}" alt="Gráfica de Barras de Sentimientos">
+                        {% endif %}
+                    </div>
+                    <h2>Nube de Palabras del Grupo de Whatsapp</h2>
+                    <div class="image-container-group">
+                        {% if wordclouds|get_item:author %}
+                                {% with wordclouds_author=wordclouds|get_item:author %}
+                                    {% if wordclouds_author.POS %}
+                                        <img src="data:image/png;base64,{{ wordclouds_author.POS }}" alt="Nube de Palabras Positivas">
+                                    {% endif %}
+                                    {% if wordclouds_author.NEG %}
+                                        <img src="data:image/png;base64,{{ wordclouds_author.NEG }}" alt="Nube de Palabras Negativas">
+                                    {% endif %}
+                                    {% if wordclouds_author.NEU %}
+                                        <img src="data:image/png;base64,{{ wordclouds_author.NEU }}" alt="Nube de Palabras Neutrales">
+                                    {% endif %}
+                                {% endwith %}
+                        {% endif %}
+                    </div>
+                </div>
+            <h2 style="text-align: center;">Resultados del analisis por usuario:</h2>
+            {% endif %}
+            {% if author != 'GRUPO' %}
             <div class="user-messages">
                 <h3 onclick="toggleVisibility('{{ author }}')">{{ author }}</h3>
                 <div class="message-container" id="messages-{{ author }}" style="display: none;">
                     <table>
                         <tr>
-                            <th>Mensaje</th>
+                            <th>Mensajes - {% with sent=author_sentiment_count|get_item:author %} 
+                                Positivos: {{sent.POS}}, Negativos: {{sent.NEG}}, Neutrales {{sent.NEU}} 
+                            {% endwith %}</th>
                             <th>Sentimiento</th>
                         </tr>
                         {% for message, sentiment in messages %}
@@ -43,19 +102,25 @@
                             </tr>
                         {% endfor %}
                     </table>
-                    {% with wordclouds_POS=wordclouds.author.POS wordclouds_NEG=wordclouds.author.NEG wordclouds_NEU=wordclouds.author.NEU %}
-                        {% if wordclouds_POS %}
-                            <img src="data:image/png;base64,{{ wordclouds_POS }}" alt="Nube de Palabras Positivas">
+                    <h2>Nube de Palabras del usuario: {{ author }}</h2>
+                    <div class="image-container">
+                        {% if wordclouds|get_item:author %}
+                            {% with wordclouds_author=wordclouds|get_item:author %}
+                                {% if wordclouds_author.POS %}
+                                    <img src="data:image/png;base64,{{ wordclouds_author.POS }}" alt="Nube de Palabras Positivas">
+                                {% endif %}
+                                {% if wordclouds_author.NEG %}
+                                    <img src="data:image/png;base64,{{ wordclouds_author.NEG }}" alt="Nube de Palabras Negativas">
+                                {% endif %}
+                                {% if wordclouds_author.NEU %}
+                                    <img src="data:image/png;base64,{{ wordclouds_author.NEU }}" alt="Nube de Palabras Neutrales">
+                                {% endif %}
+                            {% endwith %}
                         {% endif %}
-                        {% if wordclouds_NEG %}
-                            <img src="data:image/png;base64,{{ wordclouds_NEG }}" alt="Nube de Palabras Negativas">
-                        {% endif %}
-                        {% if wordclouds_NEU %}
-                            <img src="data:image/png;base64,{{ wordclouds_NEU }}" alt="Nube de Palabras Neutrales">
-                        {% endif %}
-                    {% endwith %}
+                    </div>
                 </div>
             </div>
+        {% endif %}    
         {% empty %}
             <p>No se encontraron mensajes válidos en el archivo.</p>
         {% endfor %}
