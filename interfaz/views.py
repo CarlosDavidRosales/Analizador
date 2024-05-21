@@ -8,6 +8,7 @@ matplotlib.use('Agg')  # Usar el backend 'Agg' que es para archivos y no requier
 from wordcloud import WordCloud
 import io
 import base64
+from pysentimiento.preprocessing import preprocess_tweet
 
 
 analyzer = create_analyzer(task="sentiment", lang="es")
@@ -27,7 +28,7 @@ def analyze_sentiments(data):
             if ": " in author_message:
                 author, message = author_message.split(": ", 1)
                 if message and not message.startswith("\u200e") and "<Multimedia omitido>" not in message:
-                    sentiment = analyzer.predict(message)
+                    sentiment = analyzer.predict(preprocess_tweet(message.lower()))
                     if sentiment.probas['NEG'] > 0.45:
                         #message+=str(sentiment.probas)
                         sentiment = "NEG"
@@ -83,18 +84,18 @@ def contar_palabras_mensajes(mensajes):
     exclusiones = [
         "y", "e", "que", "si", "qué", "como",
         "cuando", "mientras", "para", "hasta",
-        "este", "esta", "esto", "estos", "estas",
+        "este", "esta","está", "esto", "estos", "estas",
         "el", "la", "los", "las", "un", "una", "unos", "unas", "pero", "o", "Pero"
     ]
     for mensaje in mensajes:
         palabras = mensaje.split()
         for palabra in palabras:
-            if not len(palabra) > 3 or palabra in (['emoji', 'cara'] + exclusiones):
+            if not len(palabra) > 3 or palabra in (['emoji', 'cara'] + exclusiones) or palabra.startswith("@52"):
                 continue
             elif palabra not in conteo:
-                conteo[palabra] = 1
+                conteo[palabra.lower()] = 1
             else:
-                conteo[palabra] += 1
+                conteo[palabra.lower()] += 1
     return conteo
 
 def file_analysis(request):
