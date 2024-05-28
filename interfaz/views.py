@@ -94,7 +94,7 @@ def contar_palabras_mensajes(mensajes):
     for mensaje in mensajes:
         palabras = mensaje.split()
         for palabra in palabras:
-            if not len(palabra) >= 3 or palabra in (['emoji', 'cara'] + exclusiones) or palabra.startswith("@52"):
+            if not len(palabra) > 3 or palabra in (['emoji', 'cara'] + exclusiones) or palabra.startswith("@52"):
                 if palabra.lower() in ["sí", "si", "no"]:
                     conteo[palabra.lower()] = conteo.get(palabra.lower(), 0) + 1
                 continue
